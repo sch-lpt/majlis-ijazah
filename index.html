@@ -21,7 +21,7 @@
     .bar-title{font-size:14px;font-weight:700;line-height:1.15;flex:1}
     .bar-sub{font-size:10px;opacity:.72;font-weight:400;margin-top:2px}
     button{border:0;border-radius:8px;padding:8px 10px;font-weight:700;cursor:pointer}
-    .settings{background:#fff;color:#111827}.install{background:#fff;color:#111827}.install.hidden{display:none!important}
+    .settings{background:#fff;color:#111827}
     .open{background:#e5e7eb;color:#111827;margin-right:4px}
     iframe{border:0;width:100%;height:100%;background:#f3f5f8;display:block}
     .frame-wrap{position:relative;flex:1;min-height:0}
@@ -38,6 +38,19 @@
     .help{font-size:12px;color:#6b7280;line-height:1.6;margin:14px 0 0}
     .help b{color:#111827}
     .hidden{display:none!important}
+    .install-btn{background:#16a34a;color:#fff;padding:8px 10px}
+    .install-modal{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.48);display:flex;align-items:flex-end;justify-content:center;padding:18px}
+    .install-card{width:min(520px,100%);background:#fff;border-radius:20px;padding:22px;box-shadow:0 18px 50px rgba(0,0,0,.22);animation:slideUp .22s ease-out}
+    .install-card img{display:block;width:64px;height:64px;object-fit:contain;margin:0 auto 10px}
+    .install-card h2{text-align:center;font-size:20px;margin:0 0 8px}
+    .install-card p{text-align:center;font-size:13px;line-height:1.55;color:#4b5563;margin:0 0 16px}
+    .install-actions{display:flex;gap:10px}
+    .install-actions button{flex:1;padding:12px}
+    .install-primary{background:#111827;color:#fff}
+    .install-secondary{background:#e5e7eb;color:#111827}
+    .ios-help{background:#f3f4f6;border-radius:12px;padding:12px;margin-top:12px;font-size:12px;line-height:1.55;color:#374151}
+    @keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+    @media(min-width:700px){.install-modal{align-items:center}}
     @media(max-width:600px){.bar{height:50px;flex-basis:50px}.bar img{width:30px;height:30px}.bar-title{font-size:12px}.bar-sub{font-size:9px}.open{display:none}.setup-card{padding:20px}.setup-logo{width:68px;height:68px}}
   </style>
 </head>
@@ -46,10 +59,22 @@
   <header class="bar">
     <img src="icons/icon-192.png" alt="SCH">
     <div class="bar-title">Tempahan Majlis Ijazah <span class="red">Silat Cekak Hanafi</span><div class="bar-sub">Aplikasi SCH</div></div>
-    <button class="install hidden" id="installBtn" type="button">Pasang</button>
     <button class="open" id="openBtn" type="button">Buka</button>
+    <button class="install-btn hidden" id="installBtn" type="button">Pasang</button>
     <button class="settings" id="settingsBtn" type="button">⚙</button>
   </header>
+  <div class="install-modal hidden" id="installModal" role="dialog" aria-modal="true" aria-labelledby="installTitle">
+    <div class="install-card">
+      <img src="icons/icon-192.png" alt="Logo SCH">
+      <h2 id="installTitle">Pasang Aplikasi SCH</h2>
+      <p>Pasang <b>Tempahan Majlis Ijazah Silat Cekak Hanafi</b> ke telefon untuk akses terus dari Home Screen.</p>
+      <div class="install-actions">
+        <button class="install-secondary" id="laterBtn" type="button">Nanti</button>
+        <button class="install-primary" id="installNowBtn" type="button">PASANG APLIKASI</button>
+      </div>
+      <div class="ios-help hidden" id="iosHelp"><b>iPhone/iPad:</b> tekan <b>Share</b> → <b>Add to Home Screen</b> → <b>Add</b>.</div>
+    </div>
+  </div>
   <main class="frame-wrap">
     <div class="setup" id="setup">
       <div class="setup-card">
@@ -59,7 +84,7 @@
         <label for="appUrl">URL Web App</label>
         <input id="appUrl" type="url" inputmode="url" autocomplete="url" value="https://script.google.com/macros/s/AKfycbynkJ3HiGgcimpxa0klmeTpcwJd4doMnrWxlcBHxQTj6lhNqYaPiwUQpl-YmCPS11ucVg/exec" readonly class="hidden">
         <button class="primary" id="saveBtn" type="button">BUKA APLIKASI</button>
-        <div id="installHelp" class="help hidden" style="margin-top:16px;padding:12px;border-radius:10px;background:#f3f4f6;text-align:center"><b>Pasang aplikasi di telefon:</b><br>Jika pilihan pemasangan muncul, tekan <b>Pasang Aplikasi SCH</b>. Jika tidak muncul, buka menu <b>⋮</b> Chrome dan pilih <b>Install app</b> atau <b>Tambah ke Skrin Utama</b>.</div><p class="help"><b>Nota:</b> Sambungan sistem telah ditetapkan oleh pentadbir. Pengguna tidak perlu memasukkan URL Google Apps Script.</p>
+        <p class="help"><b>Nota:</b> Sambungan sistem telah ditetapkan oleh pentadbir. Pengguna tidak perlu memasukkan URL Google Apps Script.</p>
       </div>
     </div>
     <iframe id="appFrame" title="Tempahan Majlis Ijazah Silat Cekak Hanafi" allow="clipboard-read; clipboard-write"></iframe>
@@ -74,67 +99,85 @@
   const settings=document.getElementById('settingsBtn');
   const open=document.getElementById('openBtn');
   const installBtn=document.getElementById('installBtn');
-  const installHelp=document.getElementById('installHelp');
+  const installModal=document.getElementById('installModal');
+  const installNow=document.getElementById('installNowBtn');
+  const later=document.getElementById('laterBtn');
+  const iosHelp=document.getElementById('iosHelp');
   let deferredPrompt=null;
 
   function isStandalone(){
     return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
   }
-
   function load(){
     frame.src=APP_URL;
-    localStorage.setItem('sch_tempahan_app_url_v46',APP_URL);
+    localStorage.setItem('sch_tempahan_app_url_v47',APP_URL);
     setup.classList.add('hidden');
   }
-
-  function showInstallButton(){
-    if(!isStandalone() && deferredPrompt){
-      installBtn.classList.remove('hidden');
-      installHelp.classList.remove('hidden');
-    }
+  function hideInstallUI(){
+    installModal.classList.add('hidden');
+    installBtn.classList.add('hidden');
   }
+  function showInstallUI(){
+    if(isStandalone()) return;
+    installBtn.classList.remove('hidden');
+    if(!sessionStorage.getItem('sch_install_dismissed')) installModal.classList.remove('hidden');
+  }
+  function isIOS(){
+    return /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform==='MacIntel' && navigator.maxTouchPoints>1);
+  }
+  save.addEventListener('click',load);
+  settings.addEventListener('click',()=>{
+    if(confirm('Tetapan URL aplikasi dikunci untuk penggunaan rasmi SCH. Buka aplikasi sekarang?')) load();
+  });
+  open.addEventListener('click',()=>window.open(APP_URL,'_blank','noopener'));
 
-  window.addEventListener('beforeinstallprompt',(e)=>{
-    e.preventDefault();
-    deferredPrompt=e;
-    showInstallButton();
+  window.addEventListener('beforeinstallprompt',(event)=>{
+    event.preventDefault();
+    deferredPrompt=event;
+    showInstallUI();
   });
 
-  installBtn.addEventListener('click', async ()=>{
-    if(!deferredPrompt){
-      alert('Jika butang pemasangan tidak muncul, buka menu ⋮ Chrome dan pilih "Install app" atau "Tambah ke Skrin Utama".');
+  installBtn.addEventListener('click',()=>{
+    if(deferredPrompt){
+      installModal.classList.remove('hidden');
       return;
     }
-    deferredPrompt.prompt();
-    await deferredPrompt.userChoice;
-    deferredPrompt=null;
-    installBtn.classList.add('hidden');
-    installHelp.classList.add('hidden');
+    if(isIOS()){
+      iosHelp.classList.remove('hidden');
+      installModal.classList.remove('hidden');
+    } else {
+      alert('Jika butang pemasangan tidak muncul, buka menu Chrome (⋮) dan pilih “Pasang aplikasi” atau “Add to Home screen”.');
+    }
+  });
+
+  installNow.addEventListener('click',async()=>{
+    if(deferredPrompt){
+      const promptEvent=deferredPrompt;
+      deferredPrompt=null;
+      hideInstallUI();
+      try { await promptEvent.prompt(); } catch(e) {}
+      return;
+    }
+    if(isIOS()) iosHelp.classList.remove('hidden');
+  });
+
+  later.addEventListener('click',()=>{
+    sessionStorage.setItem('sch_install_dismissed','1');
+    hideInstallUI();
   });
 
   window.addEventListener('appinstalled',()=>{
     deferredPrompt=null;
-    installBtn.classList.add('hidden');
-    installHelp.classList.add('hidden');
+    hideInstallUI();
+    sessionStorage.removeItem('sch_install_dismissed');
   });
-
-  save.addEventListener('click',load);
-  settings.addEventListener('click',()=>{
-    if(confirm('Tetapan aplikasi rasmi SCH telah ditetapkan. Buka aplikasi sekarang?')) load();
-  });
-  open.addEventListener('click',()=>window.open(APP_URL,'_blank','noopener'));
 
   load();
-
-  if(!isStandalone()){
-    installHelp.classList.remove('hidden');
+  if(isIOS() && !isStandalone()){
+    // iOS has no beforeinstallprompt; show a manual installation guide.
+    setTimeout(()=>{ if(!sessionStorage.getItem('sch_install_dismissed')) showInstallUI(); },900);
   }
-
-  if('serviceWorker' in navigator){
-    window.addEventListener('load',()=>{
-      navigator.serviceWorker.register('./sw.js').catch(()=>{});
-    });
-  }
+  if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));}
 })();
 </script>
 </body>
