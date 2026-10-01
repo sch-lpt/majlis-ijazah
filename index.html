@@ -21,7 +21,7 @@
     .bar-title{font-size:14px;font-weight:700;line-height:1.15;flex:1}
     .bar-sub{font-size:10px;opacity:.72;font-weight:400;margin-top:2px}
     button{border:0;border-radius:8px;padding:8px 10px;font-weight:700;cursor:pointer}
-    .settings{background:#fff;color:#111827}
+    .settings{background:#fff;color:#111827}.install{background:#fff;color:#111827}.install.hidden{display:none!important}
     .open{background:#e5e7eb;color:#111827;margin-right:4px}
     iframe{border:0;width:100%;height:100%;background:#f3f5f8;display:block}
     .frame-wrap{position:relative;flex:1;min-height:0}
@@ -46,6 +46,7 @@
   <header class="bar">
     <img src="icons/icon-192.png" alt="SCH">
     <div class="bar-title">Tempahan Majlis Ijazah <span class="red">Silat Cekak Hanafi</span><div class="bar-sub">Aplikasi SCH</div></div>
+    <button class="install hidden" id="installBtn" type="button">Pasang</button>
     <button class="open" id="openBtn" type="button">Buka</button>
     <button class="settings" id="settingsBtn" type="button">⚙</button>
   </header>
@@ -58,7 +59,7 @@
         <label for="appUrl">URL Web App</label>
         <input id="appUrl" type="url" inputmode="url" autocomplete="url" value="https://script.google.com/macros/s/AKfycbynkJ3HiGgcimpxa0klmeTpcwJd4doMnrWxlcBHxQTj6lhNqYaPiwUQpl-YmCPS11ucVg/exec" readonly class="hidden">
         <button class="primary" id="saveBtn" type="button">BUKA APLIKASI</button>
-        <p class="help"><b>Nota:</b> Sambungan sistem telah ditetapkan oleh pentadbir. Pengguna tidak perlu memasukkan URL Google Apps Script.</p>
+        <div id="installHelp" class="help hidden" style="margin-top:16px;padding:12px;border-radius:10px;background:#f3f4f6;text-align:center"><b>Pasang aplikasi di telefon:</b><br>Jika pilihan pemasangan muncul, tekan <b>Pasang Aplikasi SCH</b>. Jika tidak muncul, buka menu <b>⋮</b> Chrome dan pilih <b>Install app</b> atau <b>Tambah ke Skrin Utama</b>.</div><p class="help"><b>Nota:</b> Sambungan sistem telah ditetapkan oleh pentadbir. Pengguna tidak perlu memasukkan URL Google Apps Script.</p>
       </div>
     </div>
     <iframe id="appFrame" title="Tempahan Majlis Ijazah Silat Cekak Hanafi" allow="clipboard-read; clipboard-write"></iframe>
@@ -72,18 +73,68 @@
   const save=document.getElementById('saveBtn');
   const settings=document.getElementById('settingsBtn');
   const open=document.getElementById('openBtn');
+  const installBtn=document.getElementById('installBtn');
+  const installHelp=document.getElementById('installHelp');
+  let deferredPrompt=null;
+
+  function isStandalone(){
+    return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+  }
+
   function load(){
     frame.src=APP_URL;
-    localStorage.setItem('sch_tempahan_app_url_v45',APP_URL);
+    localStorage.setItem('sch_tempahan_app_url_v46',APP_URL);
     setup.classList.add('hidden');
   }
+
+  function showInstallButton(){
+    if(!isStandalone() && deferredPrompt){
+      installBtn.classList.remove('hidden');
+      installHelp.classList.remove('hidden');
+    }
+  }
+
+  window.addEventListener('beforeinstallprompt',(e)=>{
+    e.preventDefault();
+    deferredPrompt=e;
+    showInstallButton();
+  });
+
+  installBtn.addEventListener('click', async ()=>{
+    if(!deferredPrompt){
+      alert('Jika butang pemasangan tidak muncul, buka menu ⋮ Chrome dan pilih "Install app" atau "Tambah ke Skrin Utama".');
+      return;
+    }
+    deferredPrompt.prompt();
+    await deferredPrompt.userChoice;
+    deferredPrompt=null;
+    installBtn.classList.add('hidden');
+    installHelp.classList.add('hidden');
+  });
+
+  window.addEventListener('appinstalled',()=>{
+    deferredPrompt=null;
+    installBtn.classList.add('hidden');
+    installHelp.classList.add('hidden');
+  });
+
   save.addEventListener('click',load);
   settings.addEventListener('click',()=>{
-    if(confirm('Tetapan URL aplikasi dikunci untuk penggunaan rasmi SCH. Buka aplikasi sekarang?')) load();
+    if(confirm('Tetapan aplikasi rasmi SCH telah ditetapkan. Buka aplikasi sekarang?')) load();
   });
   open.addEventListener('click',()=>window.open(APP_URL,'_blank','noopener'));
+
   load();
-  if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));}
+
+  if(!isStandalone()){
+    installHelp.classList.remove('hidden');
+  }
+
+  if('serviceWorker' in navigator){
+    window.addEventListener('load',()=>{
+      navigator.serviceWorker.register('./sw.js').catch(()=>{});
+    });
+  }
 })();
 </script>
 </body>
