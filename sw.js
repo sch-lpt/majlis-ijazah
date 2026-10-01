@@ -1,5 +1,5 @@
-const CACHE='sch-tempahan-v50-icon-stmisch';
-const ASSETS=['./','./index.html','./manifest.webmanifest','./icons/icon-192-v50.png','./icons/icon-512-v50.png'];
+const CACHE='sch-tempahan-v51-nama-sistem';
+const ASSETS=['./','./index.html','./manifest.webmanifest','./icons/icon-192-v51.png','./icons/icon-512-v51.png'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting())));
 self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE && k.startsWith('sch-tempahan-')).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
 self.addEventListener('fetch',e=>{

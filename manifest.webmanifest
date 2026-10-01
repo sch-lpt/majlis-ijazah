@@ -1,9 +1,9 @@
 {
-  "name": "Tempahan Majlis Ijazah SCH",
+  "name": "Sistem Tempahan Majlis Ijazah SCH",
   "short_name": "STMISCH",
-  "description": "Aplikasi rasmi Tempahan Majlis Ijazah Silat Cekak Hanafi",
+  "description": "Aplikasi rasmi Sistem Tempahan Majlis Ijazah Silat Cekak Hanafi",
   "lang": "ms-MY",
-  "start_url": "./?v=50",
+  "start_url": "./?v=51",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
