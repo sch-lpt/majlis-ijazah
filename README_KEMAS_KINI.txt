@@ -1,5 +1,4 @@
-V68 - STMISCH GitHub launcher
+STMISCH V69
 
-Gantikan fail root: index.html, manifest.webmanifest, sw.js, favicon.png, icon-180.png, icon-192.png, icon-512.png.
-Folder icons/ lama boleh dikekalkan.
-URL Web App menggunakan URL deployment aktif yang disalin daripada Manage deployments.
+Launcher GitHub Pages tanpa iframe. Pautan Web App rasmi menggunakan cache-buster v=69 dan dibuka dalam tab baharu.
+URL Web App: https://script.google.com/macros/s/AKfycbynkJ3HiGgcimpxa0klmeTpcWJd4doMnrWxlcBHxQTj6lhNqYaPiwUQpl-YmCPS11ucVg/exec?v=69

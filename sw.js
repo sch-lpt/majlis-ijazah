@@ -1,4 +1,4 @@
-const CACHE="stmisch-v68";
+const CACHE="stmisch-v69";
 self.addEventListener("install",e=>self.skipWaiting());
 self.addEventListener("activate",e=>e.waitUntil(self.clients.claim()));
 self.addEventListener("fetch",e=>{
