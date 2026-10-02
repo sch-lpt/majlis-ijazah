@@ -2,183 +2,22 @@
 <html lang="ms">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta name="theme-color" content="#111827">
-  <meta name="description" content="Aplikasi Sistem Tempahan Majlis Ijazah Silat Cekak Hanafi">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>STMISCH</title>
+  <meta name="application-name" content="STMISCH">
   <meta name="apple-mobile-web-app-title" content="STMISCH">
-  <link rel="manifest" href="manifest.webmanifest">
-  <link rel="apple-touch-icon" href="icons/icon-192-v50.png">
-  <title>Sistem Tempahan Majlis Ijazah Silat Cekak Hanafi</title>
+  <meta name="theme-color" content="#111827">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="icon" type="image/png" sizes="64x64" href="./favicon.png?v=65">
+  <link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png?v=65">
+  <link rel="manifest" href="./manifest.webmanifest?v=65">
   <style>
-    *{box-sizing:border-box}
-    html,body{margin:0;width:100%;height:100%;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:#f3f5f8;color:#111827}
-    body{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}
-    .shell{height:100dvh;display:flex;flex-direction:column}
-    .bar{height:54px;flex:0 0 54px;background:#111827;color:#fff;display:flex;align-items:center;gap:10px;padding:0 12px}
-    .bar img{width:34px;height:34px;object-fit:contain;border-radius:7px;background:#fff}
-    .bar-title{font-size:14px;font-weight:700;line-height:1.15;flex:1}
-    .bar-sub{font-size:10px;opacity:.72;font-weight:400;margin-top:2px}
-    button{border:0;border-radius:8px;padding:8px 10px;font-weight:700;cursor:pointer}
-    .settings{background:#fff;color:#111827}
-    .open{background:#e5e7eb;color:#111827;margin-right:4px}
-    iframe{border:0;width:100%;height:100%;background:#f3f5f8;display:block}
-    .frame-wrap{position:relative;flex:1;min-height:0}
-    .setup{position:absolute;inset:0;z-index:5;display:flex;align-items:center;justify-content:center;padding:20px;background:linear-gradient(180deg,#f3f5f8,#eef1f5)}
-    .setup-card{width:min(620px,100%);background:#fff;border-radius:18px;padding:24px;box-shadow:0 8px 30px rgba(0,0,0,.08)}
-    .setup-logo{display:block;width:78px;height:78px;object-fit:contain;margin:0 auto 12px}
-    h1{font-size:21px;text-align:center;margin:0 0 6px}
-    .red{color:#e53935}
-    .desc{font-size:13px;line-height:1.6;color:#4b5563;text-align:center;margin:0 0 18px}
-    label{display:block;font-size:13px;font-weight:700;margin-bottom:7px}
-    input{width:100%;padding:13px;border:1px solid #d1d5db;border-radius:10px;font-size:14px;outline:0}
-    input:focus{border-color:#111827;box-shadow:0 0 0 3px rgba(17,24,39,.08)}
-    .primary{width:100%;margin-top:12px;background:#111827;color:#fff;padding:13px}
-    .help{font-size:12px;color:#6b7280;line-height:1.6;margin:14px 0 0}
-    .help b{color:#111827}
-    .hidden{display:none!important}
-    .install-btn{background:#16a34a;color:#fff;padding:8px 10px}
-    .install-modal{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.48);display:flex;align-items:flex-end;justify-content:center;padding:18px}
-    .install-card{width:min(520px,100%);background:#fff;border-radius:20px;padding:22px;box-shadow:0 18px 50px rgba(0,0,0,.22);animation:slideUp .22s ease-out}
-    .install-card img{display:block;width:64px;height:64px;object-fit:contain;margin:0 auto 10px}
-    .install-card h2{text-align:center;font-size:20px;margin:0 0 8px}
-    .install-card p{text-align:center;font-size:13px;line-height:1.55;color:#4b5563;margin:0 0 16px}
-    .install-actions{display:flex;gap:10px}
-    .install-actions button{flex:1;padding:12px}
-    .install-primary{background:#111827;color:#fff}
-    .install-secondary{background:#e5e7eb;color:#111827}
-    .ios-help{background:#f3f4f6;border-radius:12px;padding:12px;margin-top:12px;font-size:12px;line-height:1.55;color:#374151}
-    @keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
-    @media(min-width:700px){.install-modal{align-items:center}}
-    @media(max-width:600px){.bar{height:50px;flex-basis:50px}.bar img{width:30px;height:30px}.bar-title{font-size:12px}.bar-sub{font-size:9px}.open{display:none}.setup-card{padding:20px}.setup-logo{width:68px;height:68px}}
+    html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#111827}
+    iframe{display:block;width:100%;height:100%;border:0;background:#111827}
   </style>
 </head>
 <body>
-<div class="shell">
-  <header class="bar">
-    <img src="icons/icon-192-v50.png" alt="SCH">
-    <div class="bar-title">Sistem Tempahan Majlis Ijazah <span class="red">Silat Cekak Hanafi</span><div class="bar-sub">Aplikasi SCH</div></div>
-    <button class="open" id="openBtn" type="button">Buka</button>
-    <button class="install-btn hidden" id="installBtn" type="button">Pasang</button>
-    <button class="settings" id="settingsBtn" type="button">⚙</button>
-  </header>
-  <div class="install-modal hidden" id="installModal" role="dialog" aria-modal="true" aria-labelledby="installTitle">
-    <div class="install-card">
-      <img src="icons/icon-192-v50.png" alt="Logo SCH">
-      <h2 id="installTitle">Pasang Aplikasi SCH</h2>
-      <p>Pasang <b>Sistem Tempahan Majlis Ijazah Silat Cekak Hanafi</b> ke telefon untuk akses terus dari Home Screen.</p>
-      <div class="install-actions">
-        <button class="install-secondary" id="laterBtn" type="button">Nanti</button>
-        <button class="install-primary" id="installNowBtn" type="button">PASANG APLIKASI</button>
-      </div>
-      <div class="ios-help hidden" id="iosHelp"><b>iPhone/iPad:</b> tekan <b>Share</b> → <b>Add to Home Screen</b> → <b>Add</b>.</div>
-    </div>
-  </div>
-  <main class="frame-wrap">
-    <div class="setup" id="setup">
-      <div class="setup-card">
-        <img class="setup-logo" src="icons/icon-192-v50.png" alt="Logo Silat Cekak Hanafi">
-        <h1>Sistem Tempahan Majlis Ijazah <span class="red">Silat Cekak Hanafi</span></h1>
-        <p class="desc">Aplikasi telah dikonfigurasikan. Tekan <b>BUKA APLIKASI</b> untuk terus menggunakan sistem.</p>
-        <label for="appUrl">URL Web App</label>
-        <input id="appUrl" type="url" inputmode="url" autocomplete="url" value="https://script.google.com/macros/s/AKfycbynkJ3HiGgcimpxa0klmeTpcwJd4doMnrWxlcBHxQTj6lhNqYaPiwUQpl-YmCPS11ucVg/exec" readonly class="hidden">
-        <button class="primary" id="saveBtn" type="button">BUKA APLIKASI</button>
-        <p class="help"><b>Nota:</b> Sambungan sistem telah ditetapkan oleh pentadbir. Pengguna tidak perlu memasukkan URL Google Apps Script.</p>
-      </div>
-    </div>
-    <iframe id="appFrame" title="Sistem Tempahan Majlis Ijazah Silat Cekak Hanafi" allow="clipboard-read; clipboard-write"></iframe>
-  </main>
-</div>
-<script>
-(function(){
-  const APP_URL='https://script.google.com/macros/s/AKfycbynkJ3HiGgcimpxa0klmeTpcwJd4doMnrWxlcBHxQTj6lhNqYaPiwUQpl-YmCPS11ucVg/exec';
-  const frame=document.getElementById('appFrame');
-  const setup=document.getElementById('setup');
-  const save=document.getElementById('saveBtn');
-  const settings=document.getElementById('settingsBtn');
-  const open=document.getElementById('openBtn');
-  const installBtn=document.getElementById('installBtn');
-  const installModal=document.getElementById('installModal');
-  const installNow=document.getElementById('installNowBtn');
-  const later=document.getElementById('laterBtn');
-  const iosHelp=document.getElementById('iosHelp');
-  let deferredPrompt=null;
-
-  function isStandalone(){
-    return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-  }
-  function load(){
-    frame.src=APP_URL;
-    localStorage.setItem('sch_tempahan_app_url_v47',APP_URL);
-    setup.classList.add('hidden');
-  }
-  function hideInstallUI(){
-    installModal.classList.add('hidden');
-    installBtn.classList.add('hidden');
-  }
-  function showInstallUI(){
-    if(isStandalone()) return;
-    installBtn.classList.remove('hidden');
-    if(!sessionStorage.getItem('sch_install_dismissed')) installModal.classList.remove('hidden');
-  }
-  function isIOS(){
-    return /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform==='MacIntel' && navigator.maxTouchPoints>1);
-  }
-  save.addEventListener('click',load);
-  settings.addEventListener('click',()=>{
-    if(confirm('Tetapan URL aplikasi dikunci untuk penggunaan rasmi SCH. Buka aplikasi sekarang?')) load();
-  });
-  open.addEventListener('click',()=>window.open(APP_URL,'_blank','noopener'));
-
-  window.addEventListener('beforeinstallprompt',(event)=>{
-    event.preventDefault();
-    deferredPrompt=event;
-    showInstallUI();
-  });
-
-  installBtn.addEventListener('click',()=>{
-    if(deferredPrompt){
-      installModal.classList.remove('hidden');
-      return;
-    }
-    if(isIOS()){
-      iosHelp.classList.remove('hidden');
-      installModal.classList.remove('hidden');
-    } else {
-      alert('Jika butang pemasangan tidak muncul, buka menu Chrome (⋮) dan pilih “Pasang aplikasi” atau “Add to Home screen”.');
-    }
-  });
-
-  installNow.addEventListener('click',async()=>{
-    if(deferredPrompt){
-      const promptEvent=deferredPrompt;
-      deferredPrompt=null;
-      hideInstallUI();
-      try { await promptEvent.prompt(); } catch(e) {}
-      return;
-    }
-    if(isIOS()) iosHelp.classList.remove('hidden');
-  });
-
-  later.addEventListener('click',()=>{
-    sessionStorage.setItem('sch_install_dismissed','1');
-    hideInstallUI();
-  });
-
-  window.addEventListener('appinstalled',()=>{
-    deferredPrompt=null;
-    hideInstallUI();
-    sessionStorage.removeItem('sch_install_dismissed');
-  });
-
-  load();
-  if(isIOS() && !isStandalone()){
-    // iOS has no beforeinstallprompt; show a manual installation guide.
-    setTimeout(()=>{ if(!sessionStorage.getItem('sch_install_dismissed')) showInstallUI(); },900);
-  }
-  if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));}
-})();
-</script>
+  <iframe src="https://script.google.com/macros/s/AKfycbynkJ3HiGgcimpxa0klmeTpcWjD4doMnrWxlcBHxQTj6lhNqYaPiwUQpl-YmCPS11ucVg/exec" title="STMISCH" allow="clipboard-read; clipboard-write"></iframe>
 </body>
 </html>
