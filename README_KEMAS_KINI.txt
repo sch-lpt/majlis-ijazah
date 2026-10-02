@@ -1,8 +1,23 @@
-STMISCH V66 – GitHub Pages
+STMISCH V67 – GITHUB DIRECT LAUNCHER
 
-Fail root yang perlu dimuat naik ke repository GitHub: index.html, manifest.webmanifest, sw.js, favicon.png, icon-180.png, icon-192.png, icon-512.png.
+Tujuan:
+- Buang iframe yang menyebabkan paparan Google Drive "file does not exist".
+- GitHub Pages hanya menjadi launcher/PWA shell.
+- Butang BUKA STMISCH membuka Web App Apps Script rasmi secara terus.
+- Nama PWA/browser: STMISCH.
+- Ikon SCH dikekalkan.
 
-URL Web App rasmi yang digunakan:
+Web App rasmi:
 https://script.google.com/macros/s/AKfycbynkJ3HiGgcimpxa0klmeTpcWjD4doMnrWxlcBHxQTj6lhNqYaPiwUQpl-YmCPS11ucVg/exec
 
-V66 mengekalkan iframe tetapi menyediakan butang BUKA STMISCH sebagai fallback jika iframe tidak dimuatkan. Nama PWA/browser ialah STMISCH.
+Upload/replace fail berikut di root repository GitHub:
+index.html
+manifest.webmanifest
+sw.js
+favicon.png
+icon-180.png
+icon-192.png
+icon-512.png
+README_KEMAS_KINI.txt
+
+Jangan padam folder icons sedia ada.
