@@ -1,20 +1,8 @@
-STMISCH – GITHUB PAGES V65
+STMISCH V66 – GitHub Pages
 
-Perubahan:
-1. Nama pada bar browser/PWA ditukar kepada: STMISCH
-2. Manifest PWA name dan short_name: STMISCH
-3. Favicon Chrome/Firefox ditetapkan kepada logo STMISCH/SCH.
-4. Apple Touch Icon ditetapkan.
-5. Icon 192x192 dan 512x512 disediakan untuk PWA.
+Fail root yang perlu dimuat naik ke repository GitHub: index.html, manifest.webmanifest, sw.js, favicon.png, icon-180.png, icon-192.png, icon-512.png.
 
-Fail untuk repository GitHub Pages:
-- index.html
-- manifest.webmanifest
-- favicon.png
-- icon-180.png
-- icon-192.png
-- icon-512.png
-- sw.js
+URL Web App rasmi yang digunakan:
+https://script.google.com/macros/s/AKfycbynkJ3HiGgcimpxa0klmeTpcWjD4doMnrWxlcBHxQTj6lhNqYaPiwUQpl-YmCPS11ucVg/exec
 
-URL GitHub Pages:
-https://sch-lpt.github.io/majlis-ijazah/
+V66 mengekalkan iframe tetapi menyediakan butang BUKA STMISCH sebagai fallback jika iframe tidak dimuatkan. Nama PWA/browser ialah STMISCH.
