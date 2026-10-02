@@ -1,9 +1,1 @@
-const CACHE="stmisch-v69";
-self.addEventListener("install",e=>self.skipWaiting());
-self.addEventListener("activate",e=>e.waitUntil(self.clients.claim()));
-self.addEventListener("fetch",e=>{
-  const u=new URL(e.request.url);
-  if(u.origin===location.origin && e.request.method==="GET"){
-    e.respondWith(fetch(e.request).catch(()=>caches.match(e.request)));
-  }
-});
+// V70: intentionally no service-worker registration. Kept only for repository compatibility.
