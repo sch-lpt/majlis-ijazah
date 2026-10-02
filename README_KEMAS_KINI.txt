@@ -1,1 +1,1 @@
-V70 - launcher STMISCH. Uses the exact active Apps Script /exec URL without query parameters or iframe. Replace root files only. Keep icons/ folder.
+STMISCH V71 - URL Apps Script tepat berdasarkan URL yang disahkan pengguna.

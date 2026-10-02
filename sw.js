@@ -1,1 +1,3 @@
-// V70: intentionally no service-worker registration. Kept only for repository compatibility.
+const CACHE_NAME='stmisch-v71';
+self.addEventListener('install', event => { self.skipWaiting(); });
+self.addEventListener('activate', event => { event.waitUntil(self.clients.claim()); });
