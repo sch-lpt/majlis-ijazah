@@ -46,10 +46,11 @@
     .install-card img{display:block;width:64px;height:64px;object-fit:contain;margin:0 auto 10px}
     .install-card h2{text-align:center;font-size:20px;margin:0 0 8px}
     .install-card p{text-align:center;font-size:13px;line-height:1.55;color:#4b5563;margin:0 0 16px}
-    .install-actions{display:flex;gap:10px}
-    .install-actions button{flex:1;padding:12px}
+    .install-actions{display:flex;gap:10px;flex-wrap:wrap}
+    .install-actions button{flex:1 1 30%;padding:12px}
     .install-primary{background:#111827;color:#fff}
     .install-secondary{background:#e5e7eb;color:#111827}
+    .install-actions .install-primary{flex-basis:100%}
     .ios-help{background:#f3f4f6;border-radius:12px;padding:12px;margin-top:12px;font-size:12px;line-height:1.55;color:#374151}
     @keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
     @media(min-width:700px){.install-modal{align-items:center}}
@@ -72,6 +73,7 @@
       <p>Pasang <b>Tempahan Majlis Ijazah Silat Cekak Hanafi</b> ke telefon untuk akses terus dari Home Screen.</p>
       <div class="install-actions">
         <button class="install-secondary" id="laterBtn" type="button">Nanti</button>
+        <button class="install-secondary" id="alreadyInstalledBtn" type="button">Dah Pasang</button>
         <button class="install-primary" id="installNowBtn" type="button">PASANG APLIKASI</button>
       </div>
       <div class="ios-help hidden" id="iosHelp"><b>iPhone/iPad:</b> tekan <b>Share</b> → <b>Add to Home Screen</b> → <b>Add</b>.</div>
@@ -104,6 +106,7 @@
   const installModal=document.getElementById('installModal');
   const installNow=document.getElementById('installNowBtn');
   const later=document.getElementById('laterBtn');
+  const alreadyInstalled=document.getElementById('alreadyInstalledBtn');
   const iosHelp=document.getElementById('iosHelp');
   let deferredPrompt=null;
 
@@ -129,8 +132,13 @@
     installModal.classList.add('hidden');
     installBtn.classList.add('hidden');
   }
+  function hasConfirmedInstallation(){
+    try { return localStorage.getItem('sch_pwa_install_acknowledged') === '1'; }
+    catch(e) { return false; }
+  }
   function showInstallUI(){
-    if(isInstalled()){
+    // Pengguna boleh mengesahkan pemasangan secara manual bagi profil pelayar ini.
+    if(isInstalled() || hasConfirmedInstallation()){
       hideInstallUI();
       return;
     }
@@ -181,6 +189,11 @@
     hideInstallUI();
   });
 
+  alreadyInstalled.addEventListener('click',()=>{
+    try { localStorage.setItem('sch_pwa_install_acknowledged','1'); } catch(e) {}
+    hideInstallUI();
+  });
+
   window.addEventListener('appinstalled',()=>{
     deferredPrompt=null;
     try { localStorage.setItem('sch_pwa_installed','1'); } catch(e) {}
@@ -189,7 +202,8 @@
   });
 
   load();
-  if(isIOS() && !isInstalled()){
+  if(hasConfirmedInstallation()) hideInstallUI();
+  if(isIOS() && !isInstalled() && !hasConfirmedInstallation()){
     // iOS tiada event pemasangan standard; tunjuk panduan manual hanya
     // jika aplikasi tidak sedang berjalan sebagai PWA dan belum direkod dipasang.
     setTimeout(()=>{ if(!sessionStorage.getItem('sch_install_dismissed')) showInstallUI(); },900);
