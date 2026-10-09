@@ -1,3 +1,9 @@
-V50 - Icon Home Screen STMISCH
+V51 - Baiki popup pemasangan PWA STMISCH
 
-Replace the PWA files in GitHub Pages. The Home Screen icon uses the SCH logo larger inside a clear white border, with STMISCH on the icon. The manifest short_name is STMISCH. Remove the old installed PWA and reinstall after deployment so the new icon is registered.
+Perubahan:
+- Popup pemasangan disembunyikan apabila aplikasi dibuka dalam mod standalone/Home Screen.
+- Jika pelayar menghantar event appinstalled, status pemasangan disimpan untuk pelayar/profil yang sama.
+- Cache dinaik taraf ke V74 supaya fail baharu dimuat turun selepas deploy.
+
+Fail lain, URL Apps Script, paparan utama dan fungsi tempahan dikekalkan.
+Nota: pelayar tidak menyediakan cara universal untuk mengesan pemasangan Home Screen merentas semua pelayar/peranti. Pada iOS, mod standalone dikesan apabila aplikasi dibuka dari ikon Home Screen.

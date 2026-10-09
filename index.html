@@ -110,6 +110,16 @@
   function isStandalone(){
     return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
   }
+  function isInstalled(){
+    // Mod standalone mengesan aplikasi yang sedang dibuka dari Home Screen.
+    // localStorage membantu mengingati pemasangan pada pelayar/profil yang sama
+    // selepas event appinstalled diterima.
+    try {
+      return isStandalone() || localStorage.getItem('sch_pwa_installed') === '1';
+    } catch(e) {
+      return isStandalone();
+    }
+  }
   function load(){
     frame.src=APP_URL;
     localStorage.setItem('sch_tempahan_app_url_v47',APP_URL);
@@ -120,7 +130,10 @@
     installBtn.classList.add('hidden');
   }
   function showInstallUI(){
-    if(isStandalone()) return;
+    if(isInstalled()){
+      hideInstallUI();
+      return;
+    }
     installBtn.classList.remove('hidden');
     if(!sessionStorage.getItem('sch_install_dismissed')) installModal.classList.remove('hidden');
   }
@@ -170,13 +183,15 @@
 
   window.addEventListener('appinstalled',()=>{
     deferredPrompt=null;
+    try { localStorage.setItem('sch_pwa_installed','1'); } catch(e) {}
     hideInstallUI();
     sessionStorage.removeItem('sch_install_dismissed');
   });
 
   load();
-  if(isIOS() && !isStandalone()){
-    // iOS has no beforeinstallprompt; show a manual installation guide.
+  if(isIOS() && !isInstalled()){
+    // iOS tiada event pemasangan standard; tunjuk panduan manual hanya
+    // jika aplikasi tidak sedang berjalan sebagai PWA dan belum direkod dipasang.
     setTimeout(()=>{ if(!sessionStorage.getItem('sch_install_dismissed')) showInstallUI(); },900);
   }
   if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));}
